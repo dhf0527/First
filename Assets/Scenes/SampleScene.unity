@@ -726,7 +726,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.00047047346, y: -0.000014000572}
-  m_SizeDelta: {x: -780, y: 160}
+  m_SizeDelta: {x: -1080, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &355680070
 MonoBehaviour:
@@ -950,7 +950,7 @@ MonoBehaviour:
   titleParent: {fileID: 355680069}
   titlePrefab: {fileID: 866567339, guid: 7917fe26fa97da347890e8d1e9e8577f, type: 3}
   detailParent: {fileID: 1924827156}
-  detailPrefab: {fileID: 2396442896708164557, guid: ecd0a064c9f167d4a80b7ada6f19e26a, type: 3}
+  detailPrefab: {fileID: 405512274153994002, guid: ecd0a064c9f167d4a80b7ada6f19e26a, type: 3}
 --- !u!4 &493129257
 Transform:
   m_ObjectHideFlags: 0
@@ -2883,7 +2883,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 20
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 300, y: 400}

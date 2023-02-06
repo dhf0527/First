@@ -12,6 +12,13 @@ public enum MainMenuType
     Korea,
     Chicken
 }
+
+public struct KioskData
+{
+    public string name;
+    public int price;
+}
+
 public class Kiosk : MonoBehaviour
 {
     [SerializeField] private GameObject menuObj;
@@ -21,12 +28,13 @@ public class Kiosk : MonoBehaviour
     [SerializeField] private Transform titleParent;
     [SerializeField] private ItemTitle titlePrefab;
     [SerializeField] private Transform detailParent;
-    [SerializeField] private GameObject detailPrefab;
+    [SerializeField] private ItemDetail detailPrefab;
 
     List<string> titlelist = new List<string>();
-    Dictionary<string, int> menuDic = new Dictionary<string, int>();
-
+    Dictionary<string, KioskData> menuDic = new Dictionary<string, KioskData>();
     private MainMenuType selectType = MainMenuType.FastFood;
+
+    List<ItemDetail> itemDetails = new List<ItemDetail>();
 
     public int count { get; set; }
 
@@ -35,6 +43,7 @@ public class Kiosk : MonoBehaviour
     {
         List<string> curMenus = new List<string>();
         titlelist.Clear();
+        // 메뉴 메인
         switch (selectType)
         {
             case MainMenuType.FastFood:
@@ -59,7 +68,6 @@ public class Kiosk : MonoBehaviour
             default:
                 break;
         }
-
         OnShowMain();
     }
 
@@ -99,9 +107,132 @@ public class Kiosk : MonoBehaviour
 
     public void OnToggle(Toggle toggle)
     {
+        SubMenuSetting(toggle);
         if (toggle.isOn)
         {
             Debug.Log(toggle.name);
+        }
+    }
+
+    void SubMenuSetting(Toggle toggle)
+    {
+        menuDic.Clear();
+        /*
+        for (int i = detailParent.childCount - 1; i >= 0; i--)  
+        {
+            Destroy(detailParent.GetChild(i).gameObject);
+        }
+        */
+        switch (toggle.name)
+        {
+            case "햄버거":
+                {
+                    string[] keys = { "불고기버거", "새우버거", "게살버거", "치즈버거", "치킨버거" };
+                    int[] prices = { 3000, 5000, 8000, 4500, 6000 };
+
+                    DataSetCreateMenu(keys, prices);
+                }
+                break;
+
+            case "음료":
+                {
+                    string[] keys = { "콜라", "제로콜라", "사이다", "제로사이다", "환타", "웰치스" };
+                    int[] prices = { 1500, 2000, 1500, 1500, 1200, 1000 };
+
+                    DataSetCreateMenu(keys, prices);
+                }
+                break;
+
+            case "스낵류":
+                {
+                    string[] keys = {"감자튀김","어니언링","오징어링","너겟","치즈스틱" };
+                    int[] prices = { 500, 800, 1500, 1200, 1500};
+
+                    DataSetCreateMenu(keys, prices);
+                }
+                break;
+
+            case "소스":
+                {
+                    string[] keys = {"칠리", "어니언", "치즈", "머스타드", "케찹" };
+                    int[] prices = { 300, 300, 300, 300, 300 };
+
+                    DataSetCreateMenu(keys, prices);
+                }
+                break;
+
+            case "아이스크림":
+                {
+                    string[] keys = { "초콜렛", "바닐라", "딸기", "녹차", "쿠키앤크림", "민트초코칩"};
+                    int[] prices = { 800, 800, 1200, 1000, 1500, 1500};
+
+                    DataSetCreateMenu(keys, prices);
+                }
+                break;
+        }
+
+    }
+
+    void DataSetCreateMenu(string[] keys, int[] prices)
+    {
+        for (int i = 0; i < keys.Length; i++)
+        {
+            KioskData data = new KioskData();
+            data.price = prices[i];
+            data.name = keys[i];
+
+            menuDic.Add(keys[i], data);
+        }
+
+        if (itemDetails.Count == 0)
+        {
+            foreach (var item in menuDic)
+            {
+                ItemDetail id = Instantiate(detailPrefab, detailParent)
+                .SetNameText(item.Value.name)
+                .SetPriceText(item.Value.price);
+
+                itemDetails.Add(id);
+            }
+        }
+        else if (itemDetails.Count <= keys.Length)
+        {
+            int addCount = 0;
+            foreach (var item in menuDic)
+            {
+                if (addCount < detailParent.childCount)
+                {
+                    itemDetails[addCount]
+                        .SetNameText(item.Value.name)
+                        .SetPriceText(item.Value.price);
+                }
+                else
+                {
+                    ItemDetail id = itemDetails[addCount]
+                        .SetNameText(item.Value.name)
+                        .SetPriceText(item.Value.price);
+                }
+                addCount++;
+            }
+        }
+        else
+        {
+            int addCount = 0;
+            foreach (var item in menuDic)
+            {
+                if (addCount < keys.Length)
+                {
+                    itemDetails[addCount].gameObject.SetActive(true);
+                    itemDetails[addCount]
+                        .SetNameText(item.Value.name)
+                        .SetPriceText(item.Value.price);
+                }
+                else
+                {
+                    itemDetails[addCount].gameObject.SetActive(false);
+                }
+                addCount++;
+            }
         }
     }
 }

@@ -53,10 +53,18 @@ public class ItemDetail : MonoBehaviour
 
     public void Onclick()
     {
-        if (ibCont.IsCheck(kioskData.name,kioskData))
+        if (ibCont.IsCheck(kioskData.name, kioskData))
         {
-            Instantiate(itembd, parent);
+            ItemBtmDetail ibd = Instantiate(itembd, parent);
+            ibd.DataSetting(kioskData,ibCont);
+
+            ibCont.itemBtmDetails.Add(ibd);
         }
+        else
+        {
+            ibCont.AddCount(kioskData.name);
+        }
+        ibCont.TotalPrcie();
     }
 
 }
